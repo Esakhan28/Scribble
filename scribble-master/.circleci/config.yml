@@ -1,0 +1,50 @@
+version: 2.1
+jobs:
+  build:
+    #No. of servers/machines
+    parallelism: 1
+    docker:
+      - image: circleci/ruby:3.0.2-node
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_HOST_AUTH_METHOD: trust
+
+    #application directory change it with your application directory name
+    working_directory: ~/scribble_by_rohit_vishwakarma
+    environment:
+      TZ: "/usr/share/zoneinfo/America/New_York"
+      RAILS_ENV: "test"
+      RACK_ENV: "test"
+
+    steps:
+      - checkout
+      - run: gem install bundler:2.1.4
+      # Bundle install
+      - run:
+          bundle check --path=vendor/bundle || bundle install
+          --path=vendor/bundle --jobs=4 --retry=3
+      # Yarn install
+      - run:
+          chmod a+x ./bin/yarn && ./bin/yarn install --cache-folder
+          vendor/node_modules
+      # Ensure Rubocop has linted all Ruby files
+      - run: bundle exec rubocop
+      # Ensure Prettier+ESLint has been run on all JS files
+      - run:
+          npx prettier "./app/javascript/src/**/*.{js,jsx,json}" && npx eslint
+          "./app/javascript/src/**/*.{js,jsx,json}"
+      # Setup database
+      - run: cp config/database.yml.ci config/database.yml
+      - run: bundle exec rails db:create db:schema:load --trace
+      # Generate assets
+      - run: chmod a+x ./bin/webpack && ./bin/webpack
+      - run: bundle exec rails webpacker:compile
+      # Unit tests
+      - run:
+          shell: /bin/bash
+          command: bundle exec rake db:test:prepare && bundle exec rails t -v
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build

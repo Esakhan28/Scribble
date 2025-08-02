@@ -1,0 +1,11 @@
+development:
+  adapter: redis
+  url: <%= Rails.application.secrets.redis_url %>
+
+test:
+  adapter: test
+
+production:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: scribble_by_rohit_vishwakarma_production

@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: scribble_by_rohit_vishwakarma_development
+
+test:
+  <<: *default
+  database: scribble_by_rohit_vishwakarma_test
+
+production:
+  <<: *default
+  database: scribble_by_rohit_vishwakarma_production
+  username: scribble_by_rohit_vishwakarma
+  password: <%= ENV['SCRIBBLE_BY_ROHIT_VISHWAKARMA_DATABASE_PASSWORD'] %>

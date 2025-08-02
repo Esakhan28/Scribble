@@ -1,0 +1,28 @@
+
+en:
+  successfully_created: "%{entity} was successfully created!"
+  successfully_updated: "%{entity} was successfully updated!"
+  successfully_deleted: "%{entity} was successfully deleted!"
+  moved: "%{entity} were moved successfully."
+  unprocessable_entity: "%{entity} is already exist!"
+  position_updated: "%{entity} position is updated!"
+  not_found: "Couldn't find %{entity}"
+  organization:
+    incorrect_credentials: "Invalid Password"
+    could_not_auth: "Could not authenticate with the provided credentials."
+  article:
+    slug:
+      immutable: "is immutable!"
+    scheduled:
+      invalid_time: "scheduled time should be after current time."
+      publish: "publish scheduled time should be after unpublish scheduled time."
+      unpublish: "unpublish scheduled time should be after publish scheduled time."
+      invalid_publish: "with Published status without unpublish scheduled is not allowed to publish later."
+      invalid_unpublish: "with Draft status without publish scheduled is not allowed to unpublish later."
+  redirection:
+    redirection_loop: "can't be added due to redirection loop."
+    equal_path: "from & to path can't be same."
+  report:
+    render: "Rendering the report"
+    generate: "Generating the PDF report"
+    attach: "Attaching the report to the user"
